@@ -111,6 +111,8 @@ def newPredictionOnPress(key):
     print("Prediction for '"+toProcess+" is "+("Positive" if predictValue == [1] else "Negative")+"\n")
     print(questionList)
 
+def getQuestionList(value):
+    return aqgFunction.AutomaticQuestionGenerator().aqgParse(value)
 
 def predict(model, value):
     return model.predict(vectorizer.transform([value]))

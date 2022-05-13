@@ -2,7 +2,7 @@ import joblib
 import pandas as pd
 from flask import Flask, jsonify, request, render_template
 
-from main import predict, removeUnnecessaryChars
+from main import predict, removeUnnecessaryChars, getQuestionList
 
 app = Flask(__name__)
 
@@ -21,7 +21,8 @@ def followUpQuestion():
 
     result = modelLr.predict(modelVectorizer.transform([string]))
     return jsonify({
-        'result': result.tolist()
+        'result': result.tolist(),
+        'questions': getQuestionList(string)
     })
 
 
