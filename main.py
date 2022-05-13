@@ -1,3 +1,4 @@
+import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -57,6 +58,9 @@ def initTrain():
     y_train = df['attitude']
     lr.fit(X_train, y_train)
 
+    joblib.dump(vectorizer, 'output/model_vectorizer.pkl')
+    joblib.dump(lr, 'output/model_lr.pkl')
+
 def mostCommonWordsExcept(words):
     stopwords = getStopWords()
 
@@ -102,10 +106,14 @@ def newPredictionOnPress(key):
 
 
     toProcess    = removeUnnecessaryChars(str(curPredText))
+    predictValue = predict(lr, toProcess)
     questionList = aqg.aqgParse(curPredText)
-    print("Prediction for '"+toProcess+" is "+("Positive" if lr.predict(vectorizer.transform([toProcess])) == [1] else "Negative")+"\n")
+    print("Prediction for '"+toProcess+" is "+("Positive" if predictValue == [1] else "Negative")+"\n")
     print(questionList)
 
+
+def predict(model, value):
+    return model.predict(vectorizer.transform([value]))
 
 
 def main():
